@@ -20,7 +20,7 @@ GPIO.setup(STEP, GPIO.OUT, initial=GPIO.LOW)
 def run_motor(steps=1000, delay=0.005):
     GPIO.output(EN, GPIO.LOW)  # Enable the motor driver
     GPIO.output(DIR, GPIO.HIGH)  # Set direction
-    print("Berjalan")  # Print status message
+    print("Motor berjalan 1000 langkah")  # Print status message
     for _ in range(steps):
         GPIO.output(STEP, GPIO.HIGH)
         time.sleep(delay)
@@ -29,6 +29,8 @@ def run_motor(steps=1000, delay=0.005):
     GPIO.output(EN, GPIO.HIGH)  # Disable the motor driver
 
 try:
+    plastic_count = 0
+
     while True:
         _, img = cap.read()
 
@@ -72,12 +74,15 @@ try:
             cv2.rectangle(img, (x1, y1), (x1+w, y1+h), (255, 0, 0), 2)
             cv2.putText(img, text, (x1, y1-2), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 255), 2)
             
-            if label == "Plastic" or label == "Plastic Bag":
+            if label in classes:
+                plastic_count += 1
                 run_motor()
 
         cv2.imshow("Deteksi Objek", img)
         if cv2.waitKey(1) & 0xff == 27:
             break
+
+    print(f"Total plastik terdeteksi: {plastic_count}")
 
 finally:
     GPIO.cleanup()
