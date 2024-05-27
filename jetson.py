@@ -77,6 +77,8 @@ try:
             if label in classes:
                 plastic_count += 1
                 run_motor()
+                print("Menunggu 10 detik sebelum memulai ulang pemindaian...")
+                time.sleep(10)
 
         cv2.imshow("Deteksi Objek", img)
         if cv2.waitKey(1) & 0xff == 27:
