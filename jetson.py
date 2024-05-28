@@ -3,9 +3,9 @@ import cv2
 import Jetson.GPIO as GPIO
 import time
 
-classes = ["Plastic", "Plastic Bag"]
+classes = ["Plastic", "Paper", "Glass", "Metal", "Waste"]
 cap = cv2.VideoCapture(0)
-net = cv2.dnn.readNetFromONNX("plastic.onnx")
+net = cv2.dnn.readNetFromONNX("dataset1.onnx")
 
 # GPIO pin setup
 DIR = 21
@@ -77,7 +77,7 @@ try:
             if label in classes:
                 plastic_count += 1
                 run_motor()
-                print("Menunggu 10 detik sebelum memulai ulang pemindaian...")
+                print("Waiting 10 Second")
                 time.sleep(10)
 
         cv2.imshow("Deteksi Objek", img)

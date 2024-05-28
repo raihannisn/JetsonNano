@@ -2,9 +2,9 @@ import numpy as np
 import cv2
 import json
 
-classes = ["Plastic", "Plastic Bag"]
+classes = ["Glass", "Paper", "Metal", "Plastic", "Waste"]
 cap = cv2.VideoCapture(0)
-net = cv2.dnn.readNetFromONNX("best.onnx")
+net = cv2.dnn.readNetFromONNX("dataset1.onnx")
 
 while True:
     _, img = cap.read()
