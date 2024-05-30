@@ -17,20 +17,34 @@ GPIO.setup(DIR, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(EN, GPIO.OUT, initial=GPIO.HIGH)
 GPIO.setup(STEP, GPIO.OUT, initial=GPIO.LOW)
 
-def run_motor(steps=1000, delay=0.005):
+# Define the steps for each bin
+steps_per_category = {
+    "Plastic": 0,
+    "Glass": 500,
+    "Paper": 1000,
+    "Waste": 1000,
+    "Metal": 1500
+}
+
+def run_motor(target_steps, delay=0.005):
     GPIO.output(EN, GPIO.LOW)  # Enable the motor driver
     GPIO.output(DIR, GPIO.HIGH)  # Set direction
-    print("Motor berjalan 1000 langkah")  # Print status message
-    for _ in range(steps):
+    for _ in range(target_steps):
         GPIO.output(STEP, GPIO.HIGH)
         time.sleep(delay)
         GPIO.output(STEP, GPIO.LOW)
         time.sleep(delay)
     GPIO.output(EN, GPIO.HIGH)  # Disable the motor driver
 
-try:
-    plastic_count = 0
+def sort_trash(label):
+    if label in steps_per_category:
+        target_steps = steps_per_category[label]
+        run_motor(target_steps)
+        print(f"Motor berjalan {target_steps} langkah untuk {label}")
+        print("Menunggu 10 detik")
+        time.sleep(10)
 
+try:
     while True:
         _, img = cap.read()
 
@@ -73,18 +87,12 @@ try:
             text = label + "{:.2f}".format(conf)
             cv2.rectangle(img, (x1, y1), (x1+w, y1+h), (255, 0, 0), 2)
             cv2.putText(img, text, (x1, y1-2), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 255), 2)
-            
-            if label in classes:
-                plastic_count += 1
-                run_motor()
-                print("Waiting 10 Second")
-                time.sleep(10)
+
+            sort_trash(label)
 
         cv2.imshow("Deteksi Objek", img)
         if cv2.waitKey(1) & 0xff == 27:
             break
-
-    print(f"Total plastik terdeteksi: {plastic_count}")
 
 finally:
     GPIO.cleanup()
