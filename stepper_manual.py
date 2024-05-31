@@ -21,15 +21,16 @@ GPIO.output(DIR_PIN, GPIO.HIGH)  # or GPIO.LOW
 
 # Function to move stepper motor
 def move_stepper(steps, delay):
-    for _ in range(steps):
+    for i in range(steps):
         GPIO.output(STEP_PIN, GPIO.HIGH)
         time.sleep(delay)
         GPIO.output(STEP_PIN, GPIO.LOW)
         time.sleep(delay)
+        print(f"Step {i + 1}/{steps}")
 
 # Main
-steps = 2000
-delay = 0.000005  # 0.005 ms = 5 microseconds
+steps = 1000
+delay = 0.001  # Start with a larger delay for testing, adjust as needed
 
 try:
     move_stepper(steps, delay)
