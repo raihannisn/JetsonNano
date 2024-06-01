@@ -70,10 +70,10 @@ def sort_trash(label):
         kit.servo[servo_channel].angle = close_angle
         
         # Kembalikan motor ke titik 0
-        print("Mengembalikan motor ke titik 0")
+        print("Mengembalikan ke titik 0")
         return_motor_to_zero(target_steps)
-        print("Menunggu 10 detik")
-        time.sleep(10)
+        print("Menunggu 60 detik")
+        time.sleep(60)
 
 try:
     while True:
