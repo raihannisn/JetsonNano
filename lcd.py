@@ -2,6 +2,8 @@ import Jetson.GPIO as GPIO
 import time
 import numpy as np
 import cv2
+import smbus2
+import I2C_LCD_driver  # Pastikan Anda memiliki library ini
 
 # Define pin assignments
 DIR_PIN = 19  # Pin for direction (GPIO17, pin 11)
@@ -27,7 +29,10 @@ GPIO.setup(DIR_PIN, GPIO.OUT)
 GPIO.setup(STEP_PIN, GPIO.OUT)
 GPIO.setup(EN_PIN, GPIO.OUT)
 
-# Function to initialize motor	
+# Initialize LCD
+lcd = I2C_LCD_driver.lcd()
+
+# Function to initialize motor
 def initialize_motor():
     GPIO.output(DIR_PIN, GPIO.LOW)  # Set direction (HIGH for one direction, LOW for the other)
     GPIO.output(EN_PIN, GPIO.LOW)   # Enable motor (LOW to enable, HIGH to disable)
@@ -48,8 +53,10 @@ def sort_trash(label):
         steps = steps_per_category[label]
         step_motor(steps)
         print(f"Motor berjalan {steps} langkah untuk {label}")
+        lcd.lcd_display_string(f"Label: {label}", 1)
         print("Menunggu 10 detik")
         time.sleep(10)
+        lcd.lcd_clear()
 
 # Object detection and classification setup
 classes = ["Plastic", "Paper", "Glass", "Metal", "Waste"]
