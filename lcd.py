@@ -23,8 +23,8 @@ while True:
     rows = detections.shape[0]
 
     img_width, img_height = img.shape[1], img.shape[0]
-    x_scale = img_width/640
-    y_scale = img_height/640
+    x_scale = img_width / 640
+    y_scale = img_height / 640
 
     for i in range(rows):
         row = detections[i]
@@ -36,8 +36,8 @@ while True:
                 classes_ids.append(ind)
                 confidences.append(confidence)
                 cx, cy, w, h = row[:4]
-                x1 = int((cx-w/2)*x_scale)
-                y1 = int((cy-h/2)*y_scale)
+                x1 = int((cx - w / 2) * x_scale)
+                y1 = int((cy - h / 2) * y_scale)
                 width = int(w * x_scale)
                 height = int(h * y_scale)
                 box = np.array([x1, y1, width, height])
@@ -48,14 +48,11 @@ while True:
     for i in indices:
         x1, y1, w, h = boxes[i]
         label = classes[classes_ids[i]]
-        conf = confidences[i]
-        text = label + "{:.2f}".format(conf)
-        cv2.rectangle(img, (x1, y1), (x1+w, y1+h), (255, 0, 0), 2)
-        cv2.putText(img, text, (x1, y1-2), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 255), 2)
+        cv2.rectangle(img, (x1, y1), (x1 + w, y1 + h), (255, 0, 0), 2)
+        cv2.putText(img, label, (x1, y1 - 2), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 255), 2)
 
         # Tampilkan label di LCD
         lcd.lcd_display_string(f"Label: {label}", 1)
-        lcd.lcd_display_string(f"Conf: {conf:.2f}", 2)
 
     cv2.imshow("Deteksi Objek", img)
     if cv2.waitKey(1) & 0xff == 27:
