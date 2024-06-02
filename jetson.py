@@ -101,6 +101,9 @@ try:
             cv2.rectangle(img, (x1, y1), (x1+w, y1+h), (255, 0, 0), 2)
             cv2.putText(img, text, (x1, y1-2), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 255), 2)
 
+        # Panggil fungsi sort_trash setelah semua objek dideteksi
+        for i in indices:
+            label = classes[classes_ids[i]]
             sort_trash(label)
 
         cv2.imshow("Deteksi Objek", img)
