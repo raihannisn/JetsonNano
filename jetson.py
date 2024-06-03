@@ -2,6 +2,8 @@ import Jetson.GPIO as GPIO
 import time
 import numpy as np
 import cv2
+import smbus2
+import I2C_LCD_driver  # Pastikan Anda memiliki file I2C_LCD_driver.py di direktori yang sama
 
 # Define pin assignments
 DIR_PIN = 19  # Pin for direction (GPIO17, pin 11)
@@ -27,7 +29,7 @@ GPIO.setup(DIR_PIN, GPIO.OUT)
 GPIO.setup(STEP_PIN, GPIO.OUT)
 GPIO.setup(EN_PIN, GPIO.OUT)
 
-# Function to initialize motor	
+# Function to initialize motor    
 def initialize_motor():
     GPIO.output(DIR_PIN, GPIO.LOW)  # Set direction (HIGH for one direction, LOW for the other)
     GPIO.output(EN_PIN, GPIO.LOW)   # Enable motor (LOW to enable, HIGH to disable)
@@ -51,6 +53,9 @@ def sort_trash(label):
         print("Menunggu 10 detik")
         time.sleep(10)
 
+# Inisialisasi LCD
+lcd = I2C_LCD_driver.lcd()
+
 # Object detection and classification setup
 classes = ["Plastic", "Paper", "Glass", "Metal", "Waste"]
 cap = cv2.VideoCapture(0)
@@ -71,8 +76,8 @@ try:
         rows = detections.shape[0]
 
         img_width, img_height = img.shape[1], img.shape[0]
-        x_scale = img_width/640
-        y_scale = img_height/640
+        x_scale = img_width / 640
+        y_scale = img_height / 640
 
         for i in range(rows):
             row = detections[i]
@@ -84,8 +89,8 @@ try:
                     classes_ids.append(ind)
                     confidences.append(confidence)
                     cx, cy, w, h = row[:4]
-                    x1 = int((cx-w/2)*x_scale)
-                    y1 = int((cy-h/2)*y_scale)
+                    x1 = int((cx - w / 2) * x_scale)
+                    y1 = int((cy - h / 2) * y_scale)
                     width = int(w * x_scale)
                     height = int(h * y_scale)
                     box = np.array([x1, y1, width, height])
@@ -98,8 +103,11 @@ try:
             label = classes[classes_ids[i]]
             conf = confidences[i]
             text = label + "{:.2f}".format(conf)
-            cv2.rectangle(img, (x1, y1), (x1+w, y1+h), (255, 0, 0), 2)
-            cv2.putText(img, text, (x1, y1-2), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 255), 2)
+            cv2.rectangle(img, (x1, y1), (x1 + w, y1 + h), (255, 0, 0), 2)
+            cv2.putText(img, text, (x1, y1 - 2), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 255), 2)
+
+            # Tampilkan label di LCD
+            lcd.lcd_display_string(f"Label: {label}", 1)
 
         # Panggil fungsi sort_trash setelah semua objek dideteksi
         for i in indices:
