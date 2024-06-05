@@ -40,17 +40,17 @@ This Python script implements an Automatic Waste Sorting System using computer v
 1. Install Python 3.8:
    ```bash
    sudo apt update
-   sudo apt install python3.8 python3.8-dev```
+   sudo apt install python3.8 python3.8-dev
 
 2. Install pip for Python 3.8:
-   sudo apt install python3.8-distutils
+   ```sudo apt install python3.8-distutils
    wget https://bootstrap.pypa.io/get-pip.py
    sudo python3.8 get-pip.py
 
 3. Install required libraries:
-   sudo pip3.8 install Jetson.GPIO opencv-python-headless smbus2
+   ```sudo pip3.8 install Jetson.GPIO opencv-python-headless smbus2
 
 4.Install ONNX runtime (refer to official documentation).
 
 ### Run the script:
-python sampah_otomatis.py
+```python sampah_otomatis.py
