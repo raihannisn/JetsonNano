@@ -1,7 +1,6 @@
 # Automatic Waste Sorting System
 
-![Waste Sorting System](![nvidia-jetson-nano-developer-kit-b01-442355](https://github.com/raihannisn/JetsonNano/assets/137723185/4af8bfce-c430-49e1-a711-37faca2b49c6)
-)
+![nvidia-jetson-nano-developer-kit-b01-442355](https://github.com/raihannisn/JetsonNano/assets/137723185/4af8bfce-c430-49e1-a711-37faca2b49c6)
 
 ## Overview
 
