@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import smbus2
-import I2C_LCD_driver  # Pastikan Anda memiliki file I2C_LCD_driver.py di direktori yang sama
+import I2C_LCD_driver  
 
 # Inisialisasi LCD
 lcd = I2C_LCD_driver.lcd()
@@ -52,7 +52,7 @@ while True:
         cv2.putText(img, label, (x1, y1 - 2), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 0, 255), 2)
 
         # Tampilkan label di LCD
-        lcd.lcd_display_string(f"Label: {label}", 1)
+        lcd.lcd_display_string(f"Kategori:{label}", 1)
 
     cv2.imshow("Deteksi Objek", img)
     if cv2.waitKey(1) & 0xff == 27:
