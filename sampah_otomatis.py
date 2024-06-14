@@ -64,12 +64,12 @@ def move_motor(steps, direction):
 # Example function to open and close trash can lid
 def control_trash_can_lid():
     # Open the trash can lid
-    move_stepper_motor(512, GPIO.HIGH)
+    move_stepper_motor(97, GPIO.HIGH)
     print("Lid opened")
     time.sleep(5)
     
     # Close the trash can lid
-    move_stepper_motor(512, GPIO.LOW)
+    move_stepper_motor(97, GPIO.LOW)
     print("Lid closed")
 
 # Initialize LCD
@@ -87,6 +87,7 @@ steps_per_category = {
 cap = cv2.VideoCapture(0)
 net = cv2.dnn.readNetFromONNX("dataset1.onnx")
 
+motor_returned = False
 current_label = None
 
 while True:
@@ -145,9 +146,10 @@ while True:
         
         # Update the LCD display after processing is done
         lcd.lcd_display_string(f"Kategori: {current_label}", 1)
+        motor_returned = True
 
     cv2.imshow("Deteksi Objek", img)
-    if cv2.waitKey(1) & 0xff == 27:
+    if cv2.waitKey(1) & 0xff == 27 or motor_returned:
         break
 
 cap.release()

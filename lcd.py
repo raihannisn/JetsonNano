@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import smbus2
-import I2C_LCD_driver  
+import I2C_LCD_driver  # Import I2C_LCD_driver.py
 
 # Inisialisasi LCD
 lcd = I2C_LCD_driver.lcd()

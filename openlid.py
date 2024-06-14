@@ -34,8 +34,8 @@ def move_stepper_motor(steps, direction):
             time.sleep(0.001)
 
 def open_lid():
-    move_stepper_motor(512, GPIO.HIGH)  # Adjust steps according to the motor specifications
+    move_stepper_motor(512, GPIO.HIGH)
     time.sleep(5)  # Delay to keep the lid open for 5 seconds
 
 def close_lid():
-    move_stepper_motor(512, GPIO.LOW)  # Adjust steps according to the motor specifications
+    move_stepper_motor(512, GPIO.LOW)
